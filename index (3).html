@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Factor Pairs - MathsWatch</title>
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">Maths<span>Watch</span></div>
+    <a class="back-link" href="../../index.html">&larr; All topics</a>
+  </header>
+
+  <main class="game-page">
+    <h1>Factor Pairs</h1>
+    <div class="hud">
+      <div>Moves: <b id="moves">0</b></div>
+      <div>Pairs: <b id="pairs">0</b>/8</div>
+    </div>
+    <div class="mem-board" id="board"></div>
+    <button class="btn secondary" id="restart">Restart</button>
+  </main>
+
+  <div class="overlay hidden" id="overlay">
+    <h2>You found every pair!</h2>
+    <p id="overlay-msg"></p>
+    <button class="btn" id="overlay-restart">Play Again</button>
+  </div>
+
+  <script src="factors.js"></script>
+</body>
+</html>

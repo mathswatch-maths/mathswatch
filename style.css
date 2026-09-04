@@ -1,0 +1,269 @@
+:root {
+  --bg: #0f1220;
+  --bg-alt: #171b2e;
+  --card: #1c2138;
+  --accent: #6c5ce7;
+  --accent-2: #00d1b2;
+  --text: #eef0fb;
+  --text-dim: #9aa1c4;
+  --border: #2a3050;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 28px;
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-header .brand {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.site-header .brand span { color: var(--accent-2); }
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.back-link:hover { border-color: var(--accent); color: var(--text); }
+
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.hero h1 {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+}
+
+.hero p {
+  color: var(--text-dim);
+  font-size: 1.05rem;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.game-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+}
+
+.game-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 8px 24px rgba(108, 92, 231, 0.25);
+}
+
+.game-card .icon {
+  font-size: 2.4rem;
+}
+
+.game-card h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.game-card p {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+.game-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.game-page h1 {
+  margin: 0;
+}
+
+.game-page .controls-hint {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  text-align: center;
+  max-width: 480px;
+}
+
+canvas {
+  background: #05060d;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  touch-action: none;
+}
+
+.hud {
+  display: flex;
+  gap: 24px;
+  font-size: 1rem;
+  color: var(--text-dim);
+}
+
+.hud b { color: var(--text); }
+
+.btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn:hover { background: #5849c4; }
+
+.btn.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.btn.secondary:hover { border-color: var(--accent); }
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 6, 13, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 10;
+}
+
+.overlay h2 { font-size: 1.6rem; margin: 0; }
+
+.hidden { display: none !important; }
+
+footer {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  padding: 24px;
+}
+
+/* Tic tac toe */
+.ttt-board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+  gap: 8px;
+}
+
+.ttt-cell {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-size: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.ttt-cell:hover { border-color: var(--accent); }
+
+/* Minesweeper */
+.ms-board {
+  display: grid;
+  gap: 3px;
+  background: var(--border);
+  padding: 3px;
+  border-radius: 8px;
+}
+
+.ms-cell {
+  width: 28px;
+  height: 28px;
+  background: var(--card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 3px;
+}
+
+.ms-cell.revealed {
+  background: var(--bg-alt);
+  cursor: default;
+}
+
+.ms-cell.mine { background: #d63447; }
+
+/* Memory */
+.mem-board {
+  display: grid;
+  grid-template-columns: repeat(4, 90px);
+  gap: 10px;
+}
+
+.mem-card {
+  width: 90px;
+  height: 90px;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.4rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.mem-card.hidden-face { font-size: 1.6rem; color: var(--text-dim); }
+.mem-card.matched { border-color: var(--accent-2); opacity: 0.6; cursor: default; }

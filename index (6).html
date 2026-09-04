@@ -1,0 +1,162 @@
+(function () {
+  const boardEl = document.getElementById('board');
+  const statusEl = document.getElementById('status');
+  const modeBtn = document.getElementById('mode-toggle');
+  const restartBtn = document.getElementById('restart');
+
+  let cells, current, gameOver, vsCpu;
+  vsCpu = true;
+
+  const lines = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6],
+  ];
+
+  function reset() {
+    cells = Array(9).fill(null);
+    current = 'X';
+    gameOver = false;
+    render();
+    updateStatus();
+  }
+
+  function render() {
+    boardEl.innerHTML = '';
+    cells.forEach((val, i) => {
+      const div = document.createElement('div');
+      div.className = 'ttt-cell';
+      div.textContent = val || '';
+      div.addEventListener('click', () => handleMove(i));
+      boardEl.appendChild(div);
+    });
+  }
+
+  function updateStatus(msg) {
+    if (msg) {
+      statusEl.textContent = msg;
+      return;
+    }
+    statusEl.textContent = vsCpu
+      ? (current === 'X' ? 'Your turn (X)' : 'CPU thinking...')
+      : `Player ${current}'s turn`;
+  }
+
+  function winner(board) {
+    for (const [a, b, c] of lines) {
+      if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+        return board[a];
+      }
+    }
+    if (board.every((v) => v)) return 'draw';
+    return null;
+  }
+
+  function handleMove(i) {
+    if (gameOver || cells[i]) return;
+    if (vsCpu && current === 'O') return;
+
+    cells[i] = current;
+    render();
+
+    const w = winner(cells);
+    if (w) {
+      endGame(w);
+      return;
+    }
+
+    current = current === 'X' ? 'O' : 'X';
+    updateStatus();
+
+    if (vsCpu && current === 'O' && !gameOver) {
+      setTimeout(cpuMove, 350);
+    }
+  }
+
+  function endGame(w) {
+    gameOver = true;
+    if (w === 'draw') {
+      updateStatus("It's a draw!");
+    } else if (vsCpu) {
+      updateStatus(w === 'X' ? 'You win!' : 'CPU wins!');
+    } else {
+      updateStatus(`Player ${w} wins!`);
+    }
+  }
+
+  const CPU_MISTAKE_CHANCE = 0.35;
+
+  function cpuMove() {
+    if (gameOver) return;
+    const empties = cells.reduce((acc, v, i) => { if (!v) acc.push(i); return acc; }, []);
+    const move = Math.random() < CPU_MISTAKE_CHANCE
+      ? empties[Math.floor(Math.random() * empties.length)]
+      : bestMove(cells);
+    if (move === undefined || move === -1) return;
+    cells[move] = 'O';
+    render();
+    const w = winner(cells);
+    if (w) {
+      endGame(w);
+      return;
+    }
+    current = 'X';
+    updateStatus();
+  }
+
+  function bestMove(board) {
+    let bestScore = -Infinity;
+    let move = -1;
+    for (let i = 0; i < 9; i++) {
+      if (!board[i]) {
+        board[i] = 'O';
+        const score = minimax(board, 0, false);
+        board[i] = null;
+        if (score > bestScore) {
+          bestScore = score;
+          move = i;
+        }
+      }
+    }
+    return move;
+  }
+
+  function minimax(board, depth, isMax) {
+    const w = winner(board);
+    if (w === 'O') return 10 - depth;
+    if (w === 'X') return depth - 10;
+    if (w === 'draw') return 0;
+
+    if (isMax) {
+      let best = -Infinity;
+      for (let i = 0; i < 9; i++) {
+        if (!board[i]) {
+          board[i] = 'O';
+          best = Math.max(best, minimax(board, depth + 1, false));
+          board[i] = null;
+        }
+      }
+      return best;
+    } else {
+      let best = Infinity;
+      for (let i = 0; i < 9; i++) {
+        if (!board[i]) {
+          board[i] = 'X';
+          best = Math.min(best, minimax(board, depth + 1, true));
+          board[i] = null;
+        }
+      }
+      return best;
+    }
+  }
+
+  modeBtn.addEventListener('click', () => {
+    vsCpu = !vsCpu;
+    modeBtn.textContent = vsCpu ? 'Mode: vs CPU' : 'Mode: 2 Player';
+    reset();
+  });
+
+  restartBtn.addEventListener('click', reset);
+
+  reset();
+})();
